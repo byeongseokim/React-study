@@ -136,7 +136,7 @@ function App() {
       }
     }
     content = <Article title={title} body={body}></Article>;
-    contextControl = (
+    contextControl = <>
       <li>
         <a
           href={"/update/" + id}
@@ -144,10 +144,19 @@ function App() {
             event.preventDefault();
             setMode("UPDATE");
           }}>
-          Update
-        </a>
-      </li>
-    );
+          Update</a></li>
+          <li><input type="button" value="delete" onClick={()=>{
+            const newTopics = []
+            for (let i = 0; i < topics.length; i++) {
+              if(topics[i].id !== id) {
+                newTopics.push(topics[i]);
+              }
+            }
+            setTopics(newTopics);
+            setMode('WELCOME');
+            }} /></li>
+            </>
+          
   } else if (mode === "CREATE") {
     content = (
       <Create
