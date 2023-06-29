@@ -1,0 +1,13 @@
+{
+  "name": "vanilla-redux",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@testing-library/react": "^14.0.0",
+    "parcel-bundler": "^1.12.5",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "redux": "^4.2.1"
+  }
+}
