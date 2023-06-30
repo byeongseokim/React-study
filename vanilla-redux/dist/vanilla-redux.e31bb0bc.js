@@ -872,9 +872,13 @@ var divToggle = document.querySelector(".toggle");
 var counter = document.querySelector("h1");
 var btnIncrease = document.querySelector("#increase");
 var btnDecrease = document.querySelector("#decrease");
+
+// 액션 이름
 var TOGGLE_SWITCH = "TOGGLE_SWITCH";
 var INCREASE = "INCREASE";
 var DECREASE = "DECREASE";
+
+// 액션 생성 함수
 var toggleSwitch = function toggleSwitch() {
   return {
     type: TOGGLE_SWITCH
@@ -891,52 +895,101 @@ var decrease = function decrease() {
     type: DECREASE
   };
 };
+
+// 초깃값 설정
 var initialState = {
   toggle: false,
   counter: 0
 };
 
-// state가 undefined 일 때는 initialstate를 기본값으로 사용
+// 리듀서 함수 정의
 function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments.length > 1 ? arguments[1] : undefined;
-  // action.type에 따라 다른 작업을 처리함
   switch (action.type) {
     case TOGGLE_SWITCH:
       return _objectSpread(_objectSpread({}, state), {}, {
-        //불변성 유지를 해 주어야 합니다.
+        // 불변성
         toggle: !state.toggle
       });
     case INCREASE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        // 불변성
+        counter: state.counter + action.difference
+      });
+    case DECREASE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        // 불변성
+        counter: state.counter - 1
+      });
+    default:
+      return state;
+  }
+}
+
+// 스토어 생성
+var store = (0, _redux.legacy_createStore)(reducer);
+
+// Render 함수 만들기
+var render = function render() {
+  var state = store.getState(); // 현재 상태 부르기
+  // 토글 처리
+  if (state.toggle) {
+    divToggle.classList.add("active");
+  } else {
+    divToggle.classList.remove("active");
+  }
+  // 카운터 처리
+  counter.innerText = state.counter;
+};
+render();
+store.subscribe(render);
+
+// 구독하기
+var listener = function listener() {
+  console.log("update requested");
+};
+var unsubscribe = store.subscribe(listener);
+// 추후에는 subscribe 함수 대신 react-redux 라이브러리를 사용할 예정
+
+// unsubscribe(); // 추후 구독을 비활성화 할 때 함수를 호출
+
+// 액션 발생시키기
+divToggle.onclick = function () {
+  console.log("divToggle click");
+  store.dispatch(toggleSwitch());
+};
+btnIncrease.onclick = function () {
+  console.log("btnIncrease click");
+  store.dispatch(increase(1));
+};
+btnDecrease.onclick = function () {
+  console.log("btnDecrease click");
+  store.dispatch(decrease());
+};
+
+//state가 undefined일 때는 initalState를 기본값으로 사용
+function reducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  //action.type에 따라 다른 작업을 처리함
+  switch (action.type) {
+    case TOGGLE_SWITCH:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        // 불변성 유지를 해 주어야 합니다
+        toggle: !state.toggle
+      });
+    case INCREASE:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        counter: state.counter + action.difference
+      });
+    case DECREASE:
       return _objectSpread(_objectSpread({}, state), {}, {
         counter: state.counter - 1
       });
     default:
       return state;
   }
-  var store = (0, _redux.createStore)(reducer);
-  var render = function render() {
-    var state = store.getState(); //현재 상태를 불러옵니다.
-    //토글 처리
-    if (state.toggle) {
-      divToggle.classList.add("active");
-    } else {
-      divToggle.classList.remove("active");
-    }
-    // 카운터 처리
-    counter.innerText = state.counter;
-  };
-  render();
-  store.subscribe(render);
-  divToggle.onclick = function () {
-    store.dispatch(toggleSwitch());
-  };
-  btnIncrease.onclick = function () {
-    store.dispatch(increase(1));
-  };
-  btnDecrease.onclick = function () {
-    store.dispatch(decrease());
-  };
 }
 },{"redux":"node_modules/redux/es/redux.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -963,7 +1016,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56928" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50174" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
