@@ -1,6 +1,6 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import Counter from '../components/Counter';
+import { increase, decrease } from '../modules/counter';
 
 const CounterContainer = ({ number, increase, decrease }) => {
   return (
@@ -8,17 +8,12 @@ const CounterContainer = ({ number, increase, decrease }) => {
   );
 };
 
-const mapStateToProps = (status) => ({
-  number: status.counter.number,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  // 임시 함수
-  increase: () => {
-    console.log('increase');
+export default connect(
+  (status) => ({
+    number: status.counter.number,
+  }),
+  {
+    increase,
+    decrease,
   },
-  decrease: () => {
-    console.log('decrease');
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(CounterContainer);
+)(CounterContainer);
